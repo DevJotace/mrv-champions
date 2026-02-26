@@ -72,7 +72,7 @@
         .card h3 { margin-top: 0; color: var(--secondary-color); font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .preview { font-size: 0.9rem; color: #666; margin-bottom: 15px; font-style: italic; line-height: 1.4; }
 
-        /* BOTÕES */
+        /* BOTÕES DE SCRIPT */
         button.action-btn {
             width: 100%;
             padding: 14px;
@@ -94,7 +94,7 @@
         button.action-btn:active { background-color: #00332a; transform: translateY(1px); }
         button.whatsapp-btn { background-color: #25D366; }
         
-        /* BOTÕES DE LINK */
+        /* BOTÕES DE LINK (GRID 3) */
         .link-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -117,6 +117,7 @@
             gap: 4px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             transition: opacity 0.2s;
+            cursor: pointer;
         }
         
         .link-btn:active { opacity: 0.8; }
@@ -458,8 +459,8 @@
                     <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-beach-plaza-residence" target="_blank" class="link-btn btn-site">
                         <span>🌐</span> Site
                     </a>
-                    <a href="https://www.youtube.com/watch?v=-FJoP_9aikU" target="_blank" class="link-btn btn-video">
-                        <span>▶️</span> Vídeo
+                    <a href="https://www.youtube.com/watch?v=-FJoP_9aikU" class="link-btn btn-video">
+                        <span>▶️</span> Copiar
                     </a>
                 </div>
             </div>
@@ -474,8 +475,8 @@
                     <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-barra-nova" target="_blank" class="link-btn btn-site">
                         <span>🌐</span> Site
                     </a>
-                    <a href="https://www.youtube.com/watch?v=H5ftAFjWjj0" target="_blank" class="link-btn btn-video">
-                        <span>▶️</span> Vídeo
+                    <a href="https://www.youtube.com/watch?v=H5ftAFjWjj0" class="link-btn btn-video">
+                        <span>▶️</span> Copiar
                     </a>
                 </div>
             </div>
@@ -490,8 +491,8 @@
                     <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas" target="_blank" class="link-btn btn-site">
                         <span>🌐</span> Site
                     </a>
-                    <a href="https://www.youtube.com/watch?v=5eMXi4wStX4" target="_blank" class="link-btn btn-video">
-                        <span>▶️</span> Vídeo
+                    <a href="https://www.youtube.com/watch?v=5eMXi4wStX4" class="link-btn btn-video">
+                        <span>▶️</span> Copiar
                     </a>
                 </div>
             </div>
@@ -506,8 +507,8 @@
                     <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-belle-ville-parnamirim" target="_blank" class="link-btn btn-site">
                         <span>🌐</span> Site
                     </a>
-                    <a href="https://www.youtube.com/watch?v=TxsE7gu1hvM" target="_blank" class="link-btn btn-video">
-                        <span>▶️</span> Vídeo
+                    <a href="https://www.youtube.com/watch?v=TxsE7gu1hvM" class="link-btn btn-video">
+                        <span>▶️</span> Copiar
                     </a>
                 </div>
             </div>
@@ -522,8 +523,8 @@
                     <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-torres-do-serido" target="_blank" class="link-btn btn-site">
                         <span>🌐</span> Site
                     </a>
-                    <a href="https://www.youtube.com/watch?v=RdmhMrngT6Q" target="_blank" class="link-btn btn-video">
-                        <span>▶️</span> Vídeo
+                    <a href="https://www.youtube.com/watch?v=RdmhMrngT6Q" class="link-btn btn-video">
+                        <span>▶️</span> Copiar
                     </a>
                 </div>
             </div>
@@ -578,11 +579,25 @@
             if(tabName === 'zap') buttons[3].classList.add('active');
         }
 
+        // COPIAR SCRIPT (TEXTO)
         document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const text = btn.getAttribute('data-text');
                 navigator.clipboard.writeText(text).then(() => {
                     showToast("Copiado! ✅");
+                }).catch(() => {
+                    showToast("Erro ao copiar ❌");
+                });
+            });
+        });
+
+        // COPIAR VÍDEO (LINK)
+        document.querySelectorAll('.btn-video').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault(); // Impede abrir o link
+                const videoUrl = btn.getAttribute('href');
+                navigator.clipboard.writeText(videoUrl).then(() => {
+                    showToast("Link do Vídeo Copiado! 📹");
                 }).catch(() => {
                     showToast("Erro ao copiar ❌");
                 });
