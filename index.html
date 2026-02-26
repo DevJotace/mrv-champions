@@ -94,21 +94,39 @@
         button.action-btn:active { background-color: #00332a; transform: translateY(1px); }
         button.whatsapp-btn { background-color: #25D366; }
         
+        /* BOTÕES DE LINK */
+        .link-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
         .link-btn {
             text-decoration: none;
-            flex: 1;
-            padding: 12px;
+            padding: 10px 5px;
             border-radius: 8px;
             text-align: center;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: white;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: opacity 0.2s;
         }
+        
+        .link-btn:active { opacity: 0.8; }
+        .link-btn span { font-size: 1.2rem; }
+
+        /* CORES ESPECÍFICAS */
+        .btn-map { background-color: #4285F4; }
+        .btn-site { background-color: #00D664; }
+        .btn-video { background-color: #FF0000; }
+        .btn-disabled { background-color: #bdc3c7; cursor: not-allowed; }
 
         /* TABELAS VISUAIS */
         .faixa-header {
@@ -414,48 +432,99 @@
         <div id="tab-links" class="content">
             <h3 style="text-align:center; color:#004D40; margin-bottom:20px;">🏢 Empreendimentos MRV</h3>
             
-            <!-- Belle Ville -->
+            <!-- Dunas Park -->
             <div class="card" style="padding:15px; margin-bottom:15px;">
-                <h4 style="margin:0 0 12px 0; color:#00D664; font-size:1.1rem;">Belle Ville (Parnamirim)</h4>
-                <div style="display:flex; gap:10px;">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Belle+Ville+Parnamirim+MRV" target="_blank" class="link-btn" style="background:#4285F4;">📍 Localização</a>
-                    <a href="https://bellevilleparnamirim.com.br/" target="_blank" class="link-btn" style="background:#00D664;">🌐 Site Oficial</a>
-                </div>
-            </div>
-
-            <!-- Torres do Seridó -->
-            <div class="card" style="padding:15px; margin-bottom:15px;">
-                <h4 style="margin:0 0 12px 0; color:#00D664; font-size:1.1rem;">Torres do Seridó</h4>
-                <div style="display:flex; gap:10px;">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Torres+do+Serido+MRV+Nova+Parnamirim" target="_blank" class="link-btn" style="background:#4285F4;">📍 Localização</a>
-                    <a href="https://www.mrv.com.br/imoveis/apartamentos/rio-grande-do-norte/parnamirim/nova-parnamirim/torres-do-serido" target="_blank" class="link-btn" style="background:#00D664;">🌐 Site Oficial</a>
+                <h4 style="margin:0; color:#00D664; font-size:1.1rem;">Dunas Park (Lançamento)</h4>
+                <div class="link-grid">
+                    <a href="https://maps.app.goo.gl/0ZSBucg6DfP0cqGw4" target="_blank" class="link-btn btn-map">
+                        <span>📍</span> Mapa
+                    </a>
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-dunas-park" target="_blank" class="link-btn btn-site">
+                        <span>🌐</span> Site
+                    </a>
+                    <a href="#" class="link-btn btn-disabled">
+                        <span>🚫</span> Vídeo
+                    </a>
                 </div>
             </div>
 
             <!-- Beach Plaza -->
             <div class="card" style="padding:15px; margin-bottom:15px;">
-                <h4 style="margin:0 0 12px 0; color:#00D664; font-size:1.1rem;">Beach Plaza (Ponta Negra)</h4>
-                <div style="display:flex; gap:10px;">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Beach+Plaza+Residence+MRV+Ponta+Negra" target="_blank" class="link-btn" style="background:#4285F4;">📍 Localização</a>
-                    <a href="https://www.mrv.com.br/imoveis/apartamentos/rio-grande-do-norte/natal/ponta-negra/beach-plaza-residence" target="_blank" class="link-btn" style="background:#00D664;">🌐 Site Oficial</a>
+                <h4 style="margin:0; color:#00D664; font-size:1.1rem;">Beach Plaza (Ponta Negra)</h4>
+                <div class="link-grid">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Beach+Plaza+Residence+MRV+Ponta+Negra" target="_blank" class="link-btn btn-map">
+                        <span>📍</span> Mapa
+                    </a>
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-beach-plaza-residence" target="_blank" class="link-btn btn-site">
+                        <span>🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=-FJoP_9aikU" target="_blank" class="link-btn btn-video">
+                        <span>▶️</span> Vídeo
+                    </a>
                 </div>
             </div>
 
-            <!-- Barra Nova -->
+            <!-- Res. Barra Nova -->
             <div class="card" style="padding:15px; margin-bottom:15px;">
-                <h4 style="margin:0 0 12px 0; color:#00D664; font-size:1.1rem;">Res. Barra Nova (ZN)</h4>
-                <div style="display:flex; gap:10px;">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Residencial+Barra+Nova+MRV+Natal" target="_blank" class="link-btn" style="background:#4285F4;">📍 Localização</a>
-                    <a href="https://www.mrv.com.br/imoveis/apartamentos/rio-grande-do-norte/natal/regiao-do-potengi/residencial-barra-nova" target="_blank" class="link-btn" style="background:#00D664;">🌐 Site Oficial</a>
+                <h4 style="margin:0; color:#00D664; font-size:1.1rem;">Res. Barra Nova (ZN)</h4>
+                <div class="link-grid">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Residencial+Barra+Nova+MRV+Natal" target="_blank" class="link-btn btn-map">
+                        <span>📍</span> Mapa
+                    </a>
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-barra-nova" target="_blank" class="link-btn btn-site">
+                        <span>🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=H5ftAFjWjj0" target="_blank" class="link-btn btn-video">
+                        <span>▶️</span> Vídeo
+                    </a>
                 </div>
             </div>
 
             <!-- Cidade das Dunas -->
             <div class="card" style="padding:15px; margin-bottom:15px;">
-                <h4 style="margin:0 0 12px 0; color:#00D664; font-size:1.1rem;">Cidade das Dunas (ZO)</h4>
-                <div style="display:flex; gap:10px;">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Residencial+Cidade+das+Dunas+MRV" target="_blank" class="link-btn" style="background:#4285F4;">📍 Localização</a>
-                    <a href="https://www.mrv.com.br/imoveis/apartamentos/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas" target="_blank" class="link-btn" style="background:#00D664;">🌐 Site Oficial</a>
+                <h4 style="margin:0; color:#00D664; font-size:1.1rem;">Cidade das Dunas (ZO)</h4>
+                <div class="link-grid">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Residencial+Cidade+das+Dunas+MRV" target="_blank" class="link-btn btn-map">
+                        <span>📍</span> Mapa
+                    </a>
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas" target="_blank" class="link-btn btn-site">
+                        <span>🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=5eMXi4wStX4" target="_blank" class="link-btn btn-video">
+                        <span>▶️</span> Vídeo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Belle Ville -->
+            <div class="card" style="padding:15px; margin-bottom:15px;">
+                <h4 style="margin:0; color:#00D664; font-size:1.1rem;">Belle Ville (Parnamirim)</h4>
+                <div class="link-grid">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Belle+Ville+Parnamirim+MRV" target="_blank" class="link-btn btn-map">
+                        <span>📍</span> Mapa
+                    </a>
+                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-belle-ville-parnamirim" target="_blank" class="link-btn btn-site">
+                        <span>🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=TxsE7gu1hvM" target="_blank" class="link-btn btn-video">
+                        <span>▶️</span> Vídeo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Torres do Seridó -->
+            <div class="card" style="padding:15px; margin-bottom:15px;">
+                <h4 style="margin:0; color:#00D664; font-size:1.1rem;">Torres do Seridó</h4>
+                <div class="link-grid">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Torres+do+Serido+MRV+Nova+Parnamirim" target="_blank" class="link-btn btn-map">
+                        <span>📍</span> Mapa
+                    </a>
+                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-torres-do-serido" target="_blank" class="link-btn btn-site">
+                        <span>🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=RdmhMrngT6Q" target="_blank" class="link-btn btn-video">
+                        <span>▶️</span> Vídeo
+                    </a>
                 </div>
             </div>
         </div>
