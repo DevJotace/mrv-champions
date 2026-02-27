@@ -86,6 +86,25 @@
         }
         input:focus, textarea:focus { outline: none; border-color: var(--primary); }
 
+        /* CHECKBOXES */
+        .checks { display: flex; gap: 20px; margin-bottom: 20px; }
+        .checkbox-container { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; font-size: 0.9rem; }
+        .checkbox-container input { display: none; }
+        .checkmark {
+            width: 22px; height: 22px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            position: relative;
+        }
+        .checkbox-container input:checked ~ .checkmark { background: var(--primary); border-color: var(--primary); }
+        .checkmark:after {
+            content: ""; position: absolute; display: none;
+            left: 7px; top: 3px; width: 5px; height: 10px;
+            border: solid #000; border-width: 0 2px 2px 0; transform: rotate(45deg);
+        }
+        .checkbox-container input:checked ~ .checkmark:after { display: block; }
+
         /* BUTTONS */
         .btn {
             width: 100%;
@@ -117,16 +136,20 @@
             text-transform: none;
         }
 
-        .btn-delete {
-            background: rgba(255, 68, 68, 0.1);
-            color: var(--danger);
-            border: 1px solid var(--danger);
-            padding: 6px 12px;
+        .btn-action {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 10px;
             border-radius: 6px;
-            font-size: 0.75rem;
             cursor: pointer;
-            margin-left: 8px;
+            margin-left: 5px;
+            font-size: 1rem;
+            transition: all 0.2s;
         }
+        .btn-action:hover { background: rgba(255,255,255,0.2); color: var(--white); }
+        .btn-delete:hover { background: rgba(255, 68, 68, 0.2); color: var(--danger); }
+        .btn-edit:hover { background: rgba(255, 165, 0, 0.2); color: orange; }
 
         /* SIMULATOR BUTTONS (GRID) */
         .sim-grid {
@@ -272,6 +295,7 @@
                 </div>
 
                 <div id="add-area" class="add-script-area hidden">
+                    <input type="hidden" id="edit-index">
                     <input type="text" id="new-title" placeholder="Título (ex: Objeção Preço)" style="margin-bottom:10px;">
                     <textarea id="new-text" rows="3" placeholder="Digite o texto do script..."></textarea>
                     <div style="display:flex; gap:10px; margin-top:10px;">
@@ -555,52 +579,51 @@
         ];
 
         function loadScripts() {
-            const saved = JSON.parse(localStorage.getItem('mrv_scripts_v2') || '[]');
+            // Unify Defaults + Saved Custom Scripts
+            const custom = JSON.parse(localStorage.getItem('mrv_scripts_v2') || '[]');
+            
+            // Check if defaults are already in (simple check by title of first item)
+            // If custom array is empty, we populate it with defaults initially
+            if (custom.length === 0 && !localStorage.getItem('mrv_scripts_initialized')) {
+                custom.push(...defaultScripts);
+                localStorage.setItem('mrv_scripts_v2', JSON.stringify(custom));
+                localStorage.setItem('mrv_scripts_initialized', 'true');
+            }
+
+            // Now 'custom' contains EVERYTHING
             const list = document.getElementById('script-list');
             list.innerHTML = '';
 
-            // Scripts Padrão (Sem deletar)
-            defaultScripts.forEach(s => {
+            custom.forEach((s, index) => {
                 const div = document.createElement('div');
                 div.className = 'script-card';
-                div.innerHTML = `
-                    <div class="script-header">
-                        <strong>${s.title}</strong>
-                        <button class="btn-copy btn">Copiar</button>
-                    </div>
-                    <div class="script-body">${s.text}</div>
-                `;
-                div.querySelector('.btn-copy').addEventListener('click', () => {
-                    navigator.clipboard.writeText(s.text);
-                    showToast("Script Copiado! ✅");
-                });
-                list.appendChild(div);
-            });
-
-            // Scripts Personalizados (Com botão Excluir)
-            saved.forEach((s, index) => {
-                const div = document.createElement('div');
-                div.className = 'script-card';
-                div.style.borderColor = '#ff6b00'; // Destaque visual
                 div.innerHTML = `
                     <div class="script-header">
                         <strong>${s.title}</strong>
                         <div style="display:flex; align-items:center;">
                             <button class="btn-copy btn">Copiar</button>
-                            <button class="btn-delete" data-index="${index}">🗑️</button>
+                            <button class="btn-action btn-edit" data-index="${index}">✏️</button>
+                            <button class="btn-action btn-delete" data-index="${index}">🗑️</button>
                         </div>
                     </div>
                     <div class="script-body">${s.text}</div>
                 `;
+                
                 div.querySelector('.btn-copy').addEventListener('click', () => {
                     navigator.clipboard.writeText(s.text);
                     showToast("Script Copiado! ✅");
                 });
-                div.querySelector('.btn-delete').addEventListener('click', (e) => {
+
+                div.querySelector('.btn-edit').addEventListener('click', () => {
+                    editScript(index);
+                });
+
+                div.querySelector('.btn-delete').addEventListener('click', () => {
                     if(confirm('Excluir este script?')) {
-                        deleteScript(e.target.getAttribute('data-index'));
+                        deleteScript(index);
                     }
                 });
+
                 list.appendChild(div);
             });
         }
@@ -613,7 +636,26 @@
             showToast("Script excluído! 🗑️");
         }
 
+        function editScript(index) {
+            const saved = JSON.parse(localStorage.getItem('mrv_scripts_v2') || '[]');
+            const script = saved[index];
+            
+            document.getElementById('new-title').value = script.title;
+            document.getElementById('new-text').value = script.text;
+            document.getElementById('edit-index').value = index; // Store index
+            
+            document.getElementById('save-script').innerText = "Atualizar";
+            document.getElementById('add-area').classList.remove('hidden');
+            
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         document.getElementById('toggle-add').addEventListener('click', () => {
+            document.getElementById('new-title').value = '';
+            document.getElementById('new-text').value = '';
+            document.getElementById('edit-index').value = ''; // Clear index
+            document.getElementById('save-script').innerText = "Salvar";
             document.getElementById('add-area').classList.remove('hidden');
         });
 
@@ -624,18 +666,31 @@
         document.getElementById('save-script').addEventListener('click', () => {
             const title = document.getElementById('new-title').value;
             const text = document.getElementById('new-text').value;
+            const index = document.getElementById('edit-index').value;
+
             if(title && text) {
                 const saved = JSON.parse(localStorage.getItem('mrv_scripts_v2') || '[]');
-                saved.push({ title, text });
+                
+                if (index !== '') {
+                    // Update existing
+                    saved[index] = { title, text };
+                    showToast("Script atualizado! 🔄");
+                } else {
+                    // Create new
+                    saved.push({ title, text });
+                    showToast("Script salvo! 💾");
+                }
+
                 localStorage.setItem('mrv_scripts_v2', JSON.stringify(saved));
                 loadScripts();
+                
                 document.getElementById('new-title').value = '';
                 document.getElementById('new-text').value = '';
                 document.getElementById('add-area').classList.add('hidden');
-                showToast("Script salvo! 💾");
             }
         });
 
+        // Initialize Scripts on Load
         loadScripts();
 
         // --- COPY KIT (LINKS TAB) ---
