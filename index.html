@@ -171,19 +171,26 @@
         .badge { background: var(--primary); color: #000; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
 
         /* LINKS GRID */
-        .link-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .link-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         .link-item {
             background: var(--input-bg);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             text-align: center;
             text-decoration: none;
             color: var(--text-primary);
             border: 1px solid var(--border-color);
             transition: border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
         .link-item:hover { border-color: var(--primary); }
-        .link-icon { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+        .link-icon { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+        .link-disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* BOTTOM NAV */
         .bottom-nav {
@@ -363,7 +370,106 @@
             </div>
         </div>
 
-        <!-- ABA 4: ZAP -->
+        <!-- ABA 4: LINKS (Restaurada) -->
+        <div id="tab-links" class="content">
+            <!-- Dunas Park -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Dunas Park</h3>
+                <div class="link-grid">
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-dunas-park" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <div class="link-item link-disabled">
+                        <span class="link-icon">🚫</span> Vídeo
+                    </div>
+                    <div class="link-item btn-copy-kit" data-nome="*DUNAS PARK*" data-yt="Vídeo em breve!" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-dunas-park">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beach Plaza -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Beach Plaza</h3>
+                <div class="link-grid">
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-beach-plaza-residence" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=-FJoP_9aikU" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*BEACH PLAZA (PONTA NEGRA)*" data-yt="https://www.youtube.com/watch?v=-FJoP_9aikU" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-beach-plaza-residence">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra Nova -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Res. Barra Nova</h3>
+                <div class="link-grid">
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-barra-nova" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=H5ftAFjWjj0" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*RESIDENCIAL BARRA NOVA (ZN)*" data-yt="https://www.youtube.com/watch?v=H5ftAFjWjj0" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-barra-nova">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cidade das Dunas -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Cidade das Dunas</h3>
+                <div class="link-grid">
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=5eMXi4wStX4" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*CIDADE DAS DUNAS (ZO)*" data-yt="https://www.youtube.com/watch?v=5eMXi4wStX4" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Belle Ville -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Belle Ville</h3>
+                <div class="link-grid">
+                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-belle-ville-parnamirim" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=TxsE7gu1hvM" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*BELLE VILLE (PARNAMIRIM)*" data-yt="https://www.youtube.com/watch?v=TxsE7gu1hvM" data-site="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-belle-ville-parnamirim">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Torres do Seridó -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Torres do Seridó</h3>
+                <div class="link-grid">
+                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-torres-do-serido" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=RdmhMrngT6Q" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*TORRES DO SERIDÓ*" data-yt="https://www.youtube.com/watch?v=RdmhMrngT6Q" data-site="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-torres-do-serido">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 5: ZAP -->
         <div id="tab-zap" class="content">
             <div class="card" style="text-align:center;">
                 <h2 style="border:none; color:#25D366;">⚡ Zap Rápido</h2>
@@ -389,6 +495,9 @@
         </button>
         <button class="nav-item" onclick="switchTab('tabelas', this)">
             <span>📊</span> Tabelas
+        </button>
+        <button class="nav-item" onclick="switchTab('links', this)">
+            <span>🔗</span> Links
         </button>
         <button class="nav-item" onclick="switchTab('zap', this)">
             <span>⚡</span> Zap
@@ -464,7 +573,7 @@
                 `;
                 div.querySelector('.btn-copy').addEventListener('click', () => {
                     navigator.clipboard.writeText(s.text);
-                    showToast();
+                    showToast("Script Copiado! ✅");
                 });
                 list.appendChild(div);
             });
@@ -494,6 +603,23 @@
 
         loadScripts();
 
+        // --- COPY KIT (LINKS TAB) ---
+        document.querySelectorAll('.btn-copy-kit').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const nome = btn.getAttribute('data-nome');
+                const yt = btn.getAttribute('data-yt');
+                const site = btn.getAttribute('data-site');
+                
+                const textoFormatado = `${nome}\nYoutube: ${yt}\nSite Oficial: ${site}`;
+                
+                navigator.clipboard.writeText(textoFormatado).then(() => {
+                    showToast("Kit Copiado! 📋");
+                }).catch(() => {
+                    showToast("Erro ao copiar ❌");
+                });
+            });
+        });
+
         // --- ZAP ---
         document.getElementById('btn-zap').addEventListener('click', () => {
             const num = document.getElementById('zap-num').value.replace(/\D/g,'');
@@ -502,8 +628,9 @@
             window.open(`https://wa.me/55${num}?text=${encodeURIComponent(msg)}`);
         });
 
-        function showToast() {
+        function showToast(msg) {
             const t = document.getElementById('toast');
+            if(msg) t.innerText = msg;
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2000);
         }
