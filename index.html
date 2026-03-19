@@ -449,6 +449,20 @@
             window.scrollTo(0,0);
         }
 
+        document.querySelectorAll(".btn-copy-catalog").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const site = btn.getAttribute("data-site");
+                const parent = btn.closest(".catalogo-info");
+                const nome = parent.querySelector("h3").innerText;
+                const iframe = parent.previousElementSibling.querySelector("iframe");
+                const yt = iframe ? iframe.src.split("?")[0].replace("embed/", "watch?v=") : "Vídeo em breve!";
+                const textoFormatado = `${nome}\nYoutube: ${yt}\nSite MRV: ${site}`;
+                navigator.clipboard.writeText(textoFormatado).then(() => {
+                    showToast("Link Copiado! 📋");
+                }).catch(() => showToast("Erro ao copiar ❌"));
+            });
+        });
+
         function showToast(msg) {
             const t = document.getElementById('toast');
             if(msg) t.innerText = msg;
@@ -679,3 +693,4 @@
     </script>
 </body>
 </html>
+
