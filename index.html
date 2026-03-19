@@ -10,17 +10,20 @@
     <style>
         :root {
             --primary: #00D664;
+            --primary-dark: #00a34c;
             --bg-dark: #121212;
             --bg-card: #1e1e1e;
             --text-primary: #e0e0e0;
             --text-secondary: #aaaaaa;
             --input-bg: #2d2d2d;
             --border-color: #333;
+            --accent-orange: #ff6b00;
+            --danger: #ff4444;
             --shadow: 0 4px 15px rgba(0,0,0,0.5);
             --radius: 12px;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -36,14 +39,21 @@
             border-bottom: 1px solid var(--border-color);
             padding: 20px;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
-        header h1 { margin: 0; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; }
+        header h1 { margin: 0; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        header p { margin: 5px 0 0; font-size: 0.8rem; color: var(--text-secondary); }
 
         main { padding: 20px; max-width: 600px; margin: 0 auto; }
 
-        .content { display: none; }
+        .content { display: none; animation: fadeIn 0.3s ease; }
         .content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
             background: var(--bg-card);
@@ -56,12 +66,80 @@
 
         h2, h3 { color: var(--primary); margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; }
 
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 600; font-size: 0.9rem; }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn:active { opacity: 0.8; transform: scale(0.98); }
+        .btn-primary { background: var(--accent-orange); color: white; }
+        .btn-success { background: var(--primary); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); margin-top: 10px; }
+        .btn-outline:hover { background: rgba(0, 214, 100, 0.1); }
+        
+        .btn-copy {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            width: auto;
+            text-transform: none;
+        }
+
+        .btn-action {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-action:hover { background: rgba(255,255,255,0.2); color: var(--text-primary); }
+        .btn-delete:hover { background: rgba(255, 68, 68, 0.2); color: var(--danger); }
+        .btn-edit:hover { background: rgba(255, 165, 0, 0.2); color: orange; }
+
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
         .btn-sim {
             background-color: var(--input-bg);
             border: 1px solid var(--primary);
             color: var(--primary);
             text-decoration: none;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 15px;
@@ -69,9 +147,20 @@
             font-weight: 700;
             transition: all 0.2s;
             text-align: center;
-            gap: 10px;
         }
         .btn-sim:hover { background-color: var(--primary); color: #000; }
+        .btn-sim span { margin-bottom: 5px; font-size: 1.5rem; }
+
+        .script-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .script-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .script-header strong { color: var(--primary); font-size: 0.95rem; }
+        .script-body { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; white-space: pre-wrap; }
 
         .faixa-row {
             display: flex;
@@ -83,7 +172,7 @@
         .faixa-row:last-child { border-bottom: none; }
         .badge { background: var(--primary); color: #000; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
         
-        .link-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .link-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         .link-item {
             background: var(--input-bg);
             padding: 12px;
@@ -92,13 +181,17 @@
             text-decoration: none;
             color: var(--text-primary);
             border: 1px solid var(--border-color);
-            font-size: 0.8rem;
+            transition: border-color 0.2s;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
         .link-item:hover { border-color: var(--primary); }
+        .link-icon { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+        .link-disabled { opacity: 0.5; cursor: not-allowed; }
 
         .bottom-nav {
             position: fixed;
@@ -110,6 +203,7 @@
             display: flex;
             justify-content: space-around;
             padding: 10px 0 20px;
+            z-index: 100;
         }
         .nav-item {
             background: none;
@@ -119,10 +213,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 4px;
             cursor: pointer;
-            width: 50%;
+            width: 25%;
         }
+        .nav-item span { font-size: 1.4rem; }
         .nav-item.active { color: var(--primary); }
+
+        .hidden { display: none !important; }
+        .add-script-area { background: var(--input-bg); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--primary); }
+        
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: var(--primary);
+            color: #000;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px;
+            position: fixed;
+            z-index: 101;
+            left: 50%;
+            bottom: 100px;
+            transform: translateX(-50%);
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        #toast.show { visibility: visible; opacity: 1; bottom: 110px; }
     </style>
 </head>
 <body>
@@ -132,30 +251,48 @@
     </header>
 
     <main>
+        <!-- ABA 1: TABELAS -->
         <div id="tab-tabelas" class="content active">
             <div class="card">
-                <h3>🏦 Simulador de Financiamento</h3>
-                <a href="https://simuladorhabitacao.caixa.gov.br/calculadora" target="_blank" class="btn-sim">
-                    <span>💰</span> Simulador Habitacional CAIXA
-                </a>
+                <h3 style="margin-bottom:15px;">🏦 Simuladores CAIXA</h3>
+                <div class="sim-grid">
+                    <a href="https://simuladorhabitacao.caixa.gov.br/calculadora" target="_blank" class="btn-sim">
+                        <span>🆕</span> Caixa Novo
+                    </a>
+                    <a href="https://www8.caixa.gov.br/" target="_blank" class="btn-sim">
+                        <span>👴</span> Caixa Antigo
+                    </a>
+                </div>
+                <div class="sim-grid" style="margin-top: 15px;">
+                    <a href="https://mrvcomercial.my.site.com/gestaovendas/s/simulador-carteira-mrv" target="_blank" class="btn-sim">
+                        <span>💼</span> Sim. Carteira
+                    </a>
+                    <a href="https://mrvcomercial.my.site.com/gestaovendas/s/simulador-flex" target="_blank" class="btn-sim">
+                        <span>🚀</span> Sim. Flex
+                    </a>
+                </div>
             </div>
 
             <div class="card">
-                <h2>✅ Requisitos (Checklist)</h2>
-                <div style="font-size:0.85rem; line-height:1.6; color:var(--text-secondary);">
-                    <div>❌ <strong>Imóvel Próprio:</strong> Não pode ter (na mesma cidade).</div>
-                    <div>❌ <strong>Benefício Anterior:</strong> Não pode ter recebido subsídio habitacional antes.</div>
-                    <div>✅ <strong>CPF Regular:</strong> Obrigatório estar regular na Receita.</div>
-                    <div>💰 <strong>Prestação Máxima:</strong> Até 30% da renda familiar bruta.</div>
-                    <div>📉 <strong>Subsídio:</strong> Concedido apenas para rendas até R$ 4.000 (Pode chegar até R$ 55.000).</div>
+                <h2>✅ Requisitos Gerais (Checklist)</h2>
+                <div class="script-card" style="border-left: 4px solid var(--primary);">
+                    <div style="font-size:0.85rem; line-height:1.6; color:var(--text-secondary);">
+                        <div>❌ <strong>Imóvel Próprio:</strong> Não pode ter (na mesma cidade).</div>
+                        <div>❌ <strong>Benefício Anterior:</strong> Não pode ter recebido subsídio habitacional antes.</div>
+                        <div>✅ <strong>CPF Regular:</strong> Obrigatório estar regular na Receita.</div>
+                        <div>💰 <strong>Prestação Máxima:</strong> Até 30% da renda familiar bruta.</div>
+                        <div>📉 <strong>Subsídio:</strong> Concedido apenas para rendas até R$ 4.000 (Pode chegar até R$ 55.000).</div>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
                 <h2>📊 MCMV 2026</h2>
+                
+                <!-- Faixa 1 e 2 -->
                 <div class="script-card">
                     <div class="script-header">
-                        <strong>Faixa 1 e 2</strong> <span class="badge">Até R$ 4.700</span>
+                        <strong>Faixa 1 e 2</strong> <span class="badge" style="background:#00D664; color:#000;">Até R$ 4.700</span>
                     </div>
                     <div class="faixa-row"><span>Juros (Até R$ 2.160)</span><strong>4,00% a.a.</strong></div>
                     <div class="faixa-row"><span>Juros (Até R$ 2.850)</span><strong>4,25% a.a.</strong></div>
@@ -165,39 +302,193 @@
                     <div class="faixa-row"><span>Teto Natal</span><strong>R$ 260.000</strong></div>
                     <div class="faixa-row"><span>Teto Parnamirim</span><strong>R$ 235.000</strong></div>
                 </div>
-                <div class="script-card" style="margin-top:10px;">
+
+                <!-- Faixa 3 -->
+                <div class="script-card">
                     <div class="script-header">
                         <strong>Faixa 3</strong> <span class="badge" style="background:#e67e22; color:#fff;">R$ 4.700,01 - 8.600</span>
                     </div>
                     <div class="faixa-row"><span>Juros</span><strong>7,66% a.a.</strong></div>
+                    <div class="faixa-row"><span>Subsídio</span><strong>Não disponível</strong></div>
                     <div class="faixa-row"><span>Teto Imóvel</span><strong>R$ 350.000</strong></div>
                 </div>
-                <div class="script-card" style="margin-top:10px;">
+
+                <!-- Faixa 4 -->
+                <div class="script-card">
                     <div class="script-header">
                         <strong>Faixa 4</strong> <span class="badge" style="background:#9b59b6; color:#fff;">R$ 8.600,01 - 12.000</span>
                     </div>
                     <div class="faixa-row"><span>Juros</span><strong>10,00% a.a.</strong></div>
                     <div class="faixa-row"><span>Teto Imóvel</span><strong>R$ 500.000</strong></div>
-                    <div class="faixa-row"><span>Cota Máx</span><strong>80%</strong></div>
+                    <div class="faixa-row"><span>Cota Financiamento Máx</span><strong>80%</strong></div>
+                    <div class="faixa-row"><small>Valor mínimo financiado: R$ 100.000</small></div>
+                </div>
+
+                <!-- Pró-Cotista -->
+                <div class="script-card" style="border-top: 2px dashed var(--primary); margin-top: 20px;">
+                    <div class="script-header">
+                        <strong>Pró-Cotista (Imóvel Novo)</strong>
+                        <span class="badge" style="background:#2980b9; color:white;">Sem limite</span>
+                    </div>
+                    <div class="faixa-row"><span>Juros</span><strong>8,66% a.a.</strong></div>
+                    <div class="faixa-row"><span>Teto Imóvel</span><strong>Até R$ 500.000</strong></div>
+                    <div class="faixa-row"><span>Cota Financiamento Máx</span><strong>60%</strong></div>
+                </div>
+
+                <!-- SBPE -->
+                <div class="script-card" style="margin-top: 10px;">
+                    <div class="script-header">
+                        <strong>SBPE (SFH)</strong>
+                        <span class="badge" style="background:#34495e; color:white;">Sem limite</span>
+                    </div>
+                    <div class="faixa-row"><span>Juros Médios</span><strong>10,92% a.a.</strong></div>
+                    <div class="faixa-row"><span>Teto SFH</span><strong>Até R$ 2.250.000</strong></div>
+                    <div class="faixa-row"><span>Cotas Máximas</span><strong>SAC 80% / PRICE 70%</strong></div>
+                    <div class="faixa-row"><small>Uso de FGTS permitido para entrada</small></div>
                 </div>
             </div>
         </div>
 
+        <!-- ABA 2: LINKS -->
         <div id="tab-links" class="content">
+            <!-- Dunas Park -->
             <div class="card">
-                <h3>🏢 Nossos Empreendimentos</h3>
+                <h3 style="margin-bottom:10px;">🏢 Dunas Park</h3>
                 <div class="link-grid">
-                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-dunas-park" target="_blank" class="link-item">Site Dunas Park</a>
-                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-beach-plaza-residence" target="_blank" class="link-item">Site Beach Plaza</a>
-                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-barra-nova" target="_blank" class="link-item">Site Barra Nova</a>
-                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas" target="_blank" class="link-item">Site Cidade das Dunas</a>
-                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-belle-ville-parnamirim" target="_blank" class="link-item">Site Belle Ville</a>
-                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-torres-do-serido" target="_blank" class="link-item">Site Torres do Seridó</a>
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-dunas-park" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <div class="link-item link-disabled">
+                        <span class="link-icon">🚫</span> Vídeo
+                    </div>
+                    <div class="link-item btn-copy-kit" data-nome="*DUNAS PARK*" data-yt="Vídeo em breve!" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-dunas-park">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
                 </div>
+            </div>
+
+            <!-- Beach Plaza -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Beach Plaza</h3>
+                <div class="link-grid">
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-beach-plaza-residence" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=-FJoP_9aikU" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*BEACH PLAZA (PONTA NEGRA)*" data-yt="https://www.youtube.com/watch?v=-FJoP_9aikU" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-beach-plaza-residence">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra Nova -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Res. Barra Nova</h3>
+                <div class="link-grid">
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-barra-nova" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=H5ftAFjWjj0" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*RESIDENCIAL BARRA NOVA (ZN)*" data-yt="https://www.youtube.com/watch?v=H5ftAFjWjj0" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-barra-nova">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cidade das Dunas -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Cidade das Dunas</h3>
+                <div class="link-grid">
+                    <a href="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=5eMXi4wStX4" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*CIDADE DAS DUNAS (ZO)*" data-yt="https://www.youtube.com/watch?v=5eMXi4wStX4" data-site="https://www.mrv.com.br/imoveis/rio-grande-do-norte/natal/apartamentos-residencial-cidade-das-dunas">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Belle Ville -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Belle Ville</h3>
+                <div class="link-grid">
+                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-belle-ville-parnamirim" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=TxsE7gu1hvM" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*BELLE VILLE (PARNAMIRIM)*" data-yt="https://www.youtube.com/watch?v=TxsE7gu1hvM" data-site="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-belle-ville-parnamirim">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+
+            <!-- Torres do Seridó -->
+            <div class="card">
+                <h3 style="margin-bottom:10px;">🏢 Torres do Seridó</h3>
+                <div class="link-grid">
+                    <a href="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-torres-do-serido" target="_blank" class="link-item">
+                        <span class="link-icon">🌐</span> Site
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=RdmhMrngT6Q" target="_blank" class="link-item">
+                        <span class="link-icon">▶️</span> Vídeo
+                    </a>
+                    <div class="link-item btn-copy-kit" data-nome="*TORRES DO SERIDÓ*" data-yt="https://www.youtube.com/watch?v=RdmhMrngT6Q" data-site="https://mrv.com.br/imoveis/rio-grande-do-norte/parnamirim/apartamentos-torres-do-serido">
+                        <span class="link-icon">📋</span> Copiar
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 3: SCRIPTS -->
+        <div id="tab-scripts" class="content">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h2 style="margin:0; border:none;">📜 Scripts Salvos</h2>
+                    <button id="toggle-add" class="btn-copy" style="background:var(--primary); color:#000; font-weight:bold;">+ Novo</button>
+                </div>
+
+                <div id="add-area" class="add-script-area hidden">
+                    <input type="hidden" id="edit-index">
+                    <input type="text" id="new-title" placeholder="Título (ex: Objeção Preço)" style="margin-bottom:10px;">
+                    <textarea id="new-text" rows="3" placeholder="Digite o texto do script..."></textarea>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button id="save-script" class="btn btn-success" style="padding:10px;">Salvar</button>
+                        <button id="cancel-script" class="btn btn-outline" style="padding:10px; margin:0; border-color:#555; color:#aaa;">Cancelar</button>
+                    </div>
+                </div>
+
+                <div id="script-list">
+                    <!-- Scripts Inseridos via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 4: ZAP -->
+        <div id="tab-zap" class="content">
+            <div class="card" style="text-align:center;">
+                <h2 style="border:none; color:#25D366;">⚡ Zap Rápido</h2>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Chame sem salvar na agenda</p>
+                
+                <input type="tel" id="zap-num" placeholder="DDD + Número (ex: 84999998888)">
+                <input type="text" id="zap-msg" placeholder="Mensagem (Opcional)" style="margin-top:10px;">
+                
+                <button id="btn-zap" class="btn" style="background:#25D366; color:#fff; margin-top:15px;">
+                    Iniciar Conversa 🚀
+                </button>
             </div>
         </div>
     </main>
 
+    <!-- MENU -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('tabelas', this)">
             <span>📊</span> Tabelas
@@ -205,14 +496,171 @@
         <button class="nav-item" onclick="switchTab('links', this)">
             <span>🔗</span> Links
         </button>
+        <button class="nav-item" onclick="switchTab('scripts', this)">
+            <span>📜</span> Scripts
+        </button>
+        <button class="nav-item" onclick="switchTab('zap', this)">
+            <span>⚡</span> Zap
+        </button>
     </nav>
 
+    <div id="toast">Copiado! ✅</div>
+
     <script>
+        // --- NAVEGAÇÃO ---
         function switchTab(id, btn) {
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
             document.getElementById('tab-' + id).classList.add('active');
+            
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+        }
+
+        // --- SCRIPTS ---
+        const defaultScripts = [
+            { title: "👋 Abordagem Inicial", text: "Oi [Nome], tudo bom? Vi aqui que você simulou um apê na região de [Bairro], mas o sistema me deu um alerta sobre sua renda. Posso te falar rapidinho?" },
+            { title: "🤔 Só Pesquisando", text: "Tranquilo, [Nome]! A pesquisa é fundamental. Para eu te ajudar a filtrar melhor (sem compromisso): você prefere **casa ou apartamento**? E qual região de Natal seria ideal pra você?" },
+            { title: "🐶 Argumento Pet", text: "Show! Tenho unidades no térreo com área privativa (Garden/Quintal), perfeito pro seu pet. Além disso, o condomínio conta com **Pet Place** exclusivo. Quer ver fotos dessa área?" },
+            { title: "📅 Fechar Visita", text: "Tenho disponibilidade qualquer dia das 08h às 20h (domingo a domingo). Fica melhor pra você durante a semana ou no fim de semana?" }
+        ];
+
+        function loadScripts() {
+            const custom = JSON.parse(localStorage.getItem('mrv_scripts_v3') || '[]');
+            
+            if (custom.length === 0 && !localStorage.getItem('mrv_scripts_initialized_v3')) {
+                custom.push(...defaultScripts);
+                localStorage.setItem('mrv_scripts_v3', JSON.stringify(custom));
+                localStorage.setItem('mrv_scripts_initialized_v3', 'true');
+            }
+
+            const list = document.getElementById('script-list');
+            list.innerHTML = '';
+
+            custom.forEach((s, index) => {
+                const div = document.createElement('div');
+                div.className = 'script-card';
+                div.innerHTML = `
+                    <div class="script-header">
+                        <strong>${s.title}</strong>
+                        <div style="display:flex; align-items:center;">
+                            <button class="btn-copy btn" style="width: auto; padding: 6px 12px; margin-right: 5px;">Copiar</button>
+                            <button class="btn-action btn-edit" data-index="${index}">✏️</button>
+                            <button class="btn-action btn-delete" data-index="${index}">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="script-body">${s.text}</div>
+                `;
+                
+                div.querySelector('.btn-copy').addEventListener('click', () => {
+                    navigator.clipboard.writeText(s.text);
+                    showToast("Script Copiado! ✅");
+                });
+
+                div.querySelector('.btn-edit').addEventListener('click', () => {
+                    editScript(index);
+                });
+
+                div.querySelector('.btn-delete').addEventListener('click', () => {
+                    if(confirm('Excluir este script?')) {
+                        deleteScript(index);
+                    }
+                });
+
+                list.appendChild(div);
+            });
+        }
+
+        function deleteScript(index) {
+            const saved = JSON.parse(localStorage.getItem('mrv_scripts_v3') || '[]');
+            saved.splice(index, 1);
+            localStorage.setItem('mrv_scripts_v3', JSON.stringify(saved));
+            loadScripts();
+            showToast("Script excluído! 🗑️");
+        }
+
+        function editScript(index) {
+            const saved = JSON.parse(localStorage.getItem('mrv_scripts_v3') || '[]');
+            const script = saved[index];
+            
+            document.getElementById('new-title').value = script.title;
+            document.getElementById('new-text').value = script.text;
+            document.getElementById('edit-index').value = index; 
+            
+            document.getElementById('save-script').innerText = "Atualizar";
+            document.getElementById('add-area').classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.getElementById('toggle-add').addEventListener('click', () => {
+            document.getElementById('new-title').value = '';
+            document.getElementById('new-text').value = '';
+            document.getElementById('edit-index').value = ''; 
+            document.getElementById('save-script').innerText = "Salvar";
+            document.getElementById('add-area').classList.remove('hidden');
+        });
+
+        document.getElementById('cancel-script').addEventListener('click', () => {
+            document.getElementById('add-area').classList.add('hidden');
+        });
+
+        document.getElementById('save-script').addEventListener('click', () => {
+            const title = document.getElementById('new-title').value;
+            const text = document.getElementById('new-text').value;
+            const index = document.getElementById('edit-index').value;
+
+            if(title && text) {
+                const saved = JSON.parse(localStorage.getItem('mrv_scripts_v3') || '[]');
+                
+                if (index !== '') {
+                    saved[index] = { title, text };
+                    showToast("Script atualizado! 🔄");
+                } else {
+                    saved.push({ title, text });
+                    showToast("Script salvo! 💾");
+                }
+
+                localStorage.setItem('mrv_scripts_v3', JSON.stringify(saved));
+                loadScripts();
+                
+                document.getElementById('new-title').value = '';
+                document.getElementById('new-text').value = '';
+                document.getElementById('add-area').classList.add('hidden');
+            }
+        });
+
+        loadScripts();
+
+        // --- COPY KIT (LINKS TAB) ---
+        document.querySelectorAll('.btn-copy-kit').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const nome = btn.getAttribute('data-nome');
+                const yt = btn.getAttribute('data-yt');
+                const site = btn.getAttribute('data-site');
+                
+                const textoFormatado = `${nome}\nYoutube: ${yt}\nSite Oficial: ${site}`;
+                
+                navigator.clipboard.writeText(textoFormatado).then(() => {
+                    showToast("Kit Copiado! 📋");
+                }).catch(() => {
+                    showToast("Erro ao copiar ❌");
+                });
+            });
+        });
+
+        // --- ZAP ---
+        document.getElementById('btn-zap').addEventListener('click', () => {
+            const num = document.getElementById('zap-num').value.replace(/\D/g,'');
+            const msg = document.getElementById('zap-msg').value;
+            if(num.length < 10) return alert('Número inválido');
+            window.open(`https://wa.me/55${num}?text=${encodeURIComponent(msg)}`);
+        });
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if(msg) t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
         }
     </script>
 </body>
